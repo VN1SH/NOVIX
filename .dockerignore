@@ -1,0 +1,14 @@
+.git
+.gitignore
+
+docs
+*.md
+!DEPLOY_DOCKER.md
+
+node_modules
+__pycache__
+.pytest_cache
+
+data
+logs
+dist
