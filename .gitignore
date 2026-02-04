@@ -7,6 +7,7 @@ __pycache__/
 venv/
 env/
 ENV/
+.venv/
 *.egg-info/
 dist/
 build/
@@ -56,6 +57,10 @@ backend/data/agent_assignments.json
 # Logs
 *.log
 traces/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.cache/
 
 # Temporary Debug Scripts
 test_*.py
