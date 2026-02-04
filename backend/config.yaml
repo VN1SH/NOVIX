@@ -55,7 +55,7 @@ context_budget:
 
 # Session Configuration / 会话配置
 session:
-  max_iterations: 5
+  max_iterations: 10
   auto_save_interval: 60  # seconds / 秒
 
 # Storage Configuration / 存储配置

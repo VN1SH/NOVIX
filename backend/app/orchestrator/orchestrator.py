@@ -5,6 +5,7 @@ Coordinates the multi-agent writing workflow.
 
 from enum import Enum
 import asyncio
+import os
 from typing import Any, Callable, Dict, List, Optional, Tuple
 
 from app.llm_gateway import get_gateway
@@ -56,8 +57,9 @@ class Orchestrator:
         self.current_status = SessionStatus.IDLE
         self.current_project_id: Optional[str] = None
         self.current_chapter: Optional[str] = None
-        self.iteration_count = 0
-        self.max_iterations = 5
+        self.iteration_counts: Dict[Tuple[str, str], int] = {}
+        max_iterations_env = os.getenv("NOVIX_MAX_ITERATIONS")
+        self.max_iterations = int(max_iterations_env) if max_iterations_env and max_iterations_env.isdigit() else 10
         self._stream_task: Optional[asyncio.Task] = None
 
     async def start_session(
@@ -72,7 +74,7 @@ class Orchestrator:
         """Start a new writing session."""
         self.current_project_id = project_id
         self.current_chapter = chapter
-        self.iteration_count = 0
+        self.iteration_counts[self._get_iteration_key(project_id, chapter)] = 0
 
         try:
             try:
@@ -173,6 +175,7 @@ class Orchestrator:
         """Continue session after user answers pre-writing questions."""
         self.current_project_id = project_id
         self.current_chapter = chapter
+        self.iteration_counts[self._get_iteration_key(project_id, chapter)] = 0
 
         scene_brief = await self.draft_storage.get_scene_brief(project_id, chapter)
         if not scene_brief:
@@ -221,8 +224,18 @@ class Orchestrator:
         if action == "confirm":
             return await self._finalize_chapter(project_id, chapter)
 
-        self.iteration_count += 1
-        if self.iteration_count >= self.max_iterations:
+        self.current_project_id = project_id
+        self.current_chapter = chapter
+        iteration_key = self._get_iteration_key(project_id, chapter)
+        self.iteration_counts[iteration_key] = self.iteration_counts.get(iteration_key, 0) + 1
+        iteration_count = self.iteration_counts[iteration_key]
+        if iteration_count >= self.max_iterations:
+            logger.debug(
+                "Maximum revision iterations reached (key=%s, current=%s, max=%s, func=process_feedback)",
+                iteration_key,
+                iteration_count,
+                self.max_iterations,
+            )
             return {
                 "success": False,
                 "error": "Maximum iterations reached",
@@ -268,7 +281,7 @@ class Orchestrator:
                     "status": SessionStatus.WAITING_FEEDBACK,
                     "draft": draft,
                     "version": draft.version,
-                    "iteration": self.iteration_count,
+                    "iteration": iteration_count,
                     "proposals": proposals,
                 }
 
@@ -296,7 +309,7 @@ class Orchestrator:
                 "status": SessionStatus.WAITING_FEEDBACK,
                 "draft": editor_result["draft"],
                 "version": editor_result.get("version", latest_version),
-                "iteration": self.iteration_count,
+                "iteration": iteration_count,
                 "proposals": proposals,
             }
 
@@ -464,7 +477,7 @@ class Orchestrator:
             "success": True,
             "status": SessionStatus.WAITING_FEEDBACK,
             "draft_v1": draft,
-            "iteration": self.iteration_count,
+            "iteration": self._get_iteration_count(project_id, chapter),
             "proposals": proposals,
         }
 
@@ -545,7 +558,7 @@ class Orchestrator:
                     "message": message,
                     "project_id": self.current_project_id,
                     "chapter": self.current_chapter,
-                    "iteration": self.iteration_count,
+                    "iteration": self._get_iteration_count(self.current_project_id, self.current_chapter),
                 }
             )
 
@@ -571,8 +584,17 @@ class Orchestrator:
             "status": self.current_status.value,
             "project_id": self.current_project_id,
             "chapter": self.current_chapter,
-            "iteration": self.iteration_count,
+            "iteration": self._get_iteration_count(self.current_project_id, self.current_chapter),
         }
+
+    def _get_iteration_key(self, project_id: Optional[str], chapter: Optional[str]) -> Tuple[str, str]:
+        """Build the iteration key for tracking revisions."""
+        return (project_id or "", chapter or "")
+
+    def _get_iteration_count(self, project_id: Optional[str], chapter: Optional[str]) -> int:
+        """Return current iteration count for a project/chapter pair."""
+        iteration_key = self._get_iteration_key(project_id, chapter)
+        return self.iteration_counts.get(iteration_key, 0)
 
     async def analyze_chapter(
         self,
