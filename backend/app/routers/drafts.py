@@ -9,6 +9,7 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 
 from app.schemas.draft import ChapterSummary
+from app.services.scene_brief_fallback import ensure_scene_brief_for_draft
 from app.storage import DraftStorage
 from app.utils.version import increment_version
 from app.utils.chapter_id import normalize_chapter_id
@@ -118,6 +119,7 @@ async def update_draft_content(project_id: str, chapter: str, body: UpdateConten
     )
 
     canonical = normalize_chapter_id(chapter) or draft.chapter or chapter
+    resolved_title = body.title
     if body.title is not None:
         summary = await draft_storage.get_chapter_summary(project_id, canonical)
         if summary:
@@ -130,6 +132,17 @@ async def update_draft_content(project_id: str, chapter: str, body: UpdateConten
                 word_count=len(body.content),
             )
         await draft_storage.save_chapter_summary(project_id, summary)
+        resolved_title = summary.title
+
+    scene_brief = await draft_storage.get_scene_brief(project_id, canonical)
+    if not scene_brief:
+        await ensure_scene_brief_for_draft(
+            draft_storage=draft_storage,
+            project_id=project_id,
+            chapter=canonical,
+            content=body.content,
+            title=resolved_title,
+        )
 
     return {
         "success": True,

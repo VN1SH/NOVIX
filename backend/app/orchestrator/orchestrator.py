@@ -14,6 +14,7 @@ from app.agents import ArchivistAgent, WriterAgent, EditorAgent
 from app.context_engine.select_engine import ContextSelectEngine
 from app.context_engine.trace_collector import trace_collector
 from app.orchestrator.storage_adapter import UnifiedStorageAdapter
+from app.services.scene_brief_fallback import ensure_scene_brief_for_draft
 from app.utils.chapter_id import ChapterIDValidator
 from app.utils.logger import get_logger
 from app.schemas.canon import Fact, TimelineEvent, CharacterState
@@ -252,7 +253,13 @@ class Orchestrator:
                 await self._update_status(SessionStatus.WRITING_DRAFT, "Writer is refining based on feedback...")
                 scene_brief = await self.draft_storage.get_scene_brief(project_id, chapter)
                 if not scene_brief:
-                    return await self._handle_error("Scene brief not found for rewrite")
+                    await ensure_scene_brief_for_draft(
+                        draft_storage=self.draft_storage,
+                        project_id=project_id,
+                        chapter=chapter,
+                        content=latest_draft.content if latest_draft else "",
+                    )
+                    scene_brief = await self.draft_storage.get_scene_brief(project_id, chapter)
 
                 context_bundle = await self._prepare_writer_context(
                     project_id=project_id,
