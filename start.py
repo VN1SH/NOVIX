@@ -57,7 +57,7 @@ def start_backend():
             stderr=subprocess.DEVNULL
         )
 
-    print("  Backend: http://localhost:8000")
+    print("  Backend: http://novix.dmxy.site/api")
     time.sleep(3)  # Give backend time to start
 
 def start_frontend():
@@ -81,7 +81,7 @@ def start_frontend():
             stderr=subprocess.DEVNULL
         )
 
-    print("  Frontend: http://localhost:3000")
+    print("  Frontend: http://novix.dmxy.site")
 
 def main():
     print("=" * 50)
@@ -109,9 +109,9 @@ def main():
         print("=" * 50)
         print()
         print("Access URLs:")
-        print("  Frontend:   http://localhost:3000")
-        print("  Backend:    http://localhost:8000")
-        print("  API Docs:   http://localhost:8000/docs")
+        print("  Frontend:   http://novix.dmxy.site")
+        print("  Backend:    http://novix.dmxy.site/api")
+        print("  API Docs:   http://novix.dmxy.site/api/docs")
         print()
         print("Tip: Close the service windows to stop the services.")
         print()

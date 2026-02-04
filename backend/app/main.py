@@ -45,14 +45,7 @@ app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 # Production-ready CORS configuration
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",  # Dev: Vite dev server
-        "http://localhost:8000",  # Prod: Packaged app
-        "http://127.0.0.1:3000",
-        "http://127.0.0.1:8000",
-        # Add your production domain here when deploying:
-        # "https://yourdomain.com",
-    ],
+    allow_origins=settings.cors_allow_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -78,8 +71,8 @@ routers = [
 ]
 
 for router in routers:
-    app.include_router(router)              # Dev: http://localhost:8000/projects
-    app.include_router(router, prefix="/api") # Prod: http://localhost:8000/api/projects
+    app.include_router(router)               # Dev: http://novix.dmxy.site/api/projects
+    app.include_router(router, prefix="/api")  # Prod: http://novix.dmxy.site/api/projects
 
 
 
@@ -100,7 +93,7 @@ async def on_startup():
     # Auto-open browser in a separate thread to not block startup
     # But webbrowser.open is usually fire-and-forget
     if getattr(sys, 'frozen', False):
-        url = f"http://localhost:{settings.port}"
+        url = f"http://{settings.host}:{settings.port}"
         logger.info(f"Auto-opening browser at {url}")
         # Small delay to ensure server is ready
         async def open_browser():

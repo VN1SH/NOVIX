@@ -34,8 +34,8 @@ if not exist "node_modules\" (
 
 echo [2/2] Starting development server...
 echo.
-echo   Frontend: http://localhost:3000
-echo   Backend:  http://localhost:8000 (make sure it is running)
+echo   Frontend: http://novix.dmxy.site
+echo   Backend:  http://novix.dmxy.site/api (make sure it is running)
 echo.
 
 call npm run dev

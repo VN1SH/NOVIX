@@ -49,9 +49,9 @@ REM Start server
 echo.
 echo [2/3] Starting server...
 echo.
-echo   Frontend: http://localhost:3000
-echo   Backend:  http://localhost:8000
-echo   API Docs: http://localhost:8000/docs
+echo   Frontend: http://novix.dmxy.site
+echo   Backend:  http://novix.dmxy.site/api
+echo   API Docs: http://novix.dmxy.site/api/docs
 echo.
 
 echo [3/3] Server running...
