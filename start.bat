@@ -39,9 +39,9 @@ echo.
 echo ========================================
 echo  URLs:
 echo ----------------------------------------
-echo  Frontend:  http://localhost:3000
-echo  Backend:   http://localhost:8000
-echo  Docs:      http://localhost:8000/docs
+echo  Frontend:  http://novix.dmxy.site
+echo  Backend:   http://novix.dmxy.site/api
+echo  Docs:      http://novix.dmxy.site/api/docs
 echo ========================================
 echo.
 echo Tip: Close the opened windows to stop services.

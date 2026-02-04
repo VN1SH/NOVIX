@@ -52,16 +52,16 @@ cd backend
 python -m app.main
 ```
 
-服务器将在 `http://localhost:8000` 启动
+服务器将在 `http://novix.dmxy.site/api` 启动
 
-访问 API 文档：`http://localhost:8000/docs`
+访问 API 文档：`http://novix.dmxy.site/api/docs`
 
 ## 3. 测试基本流程
 
 ### 步骤 1：创建项目
 
 ```bash
-curl -X POST "http://localhost:8000/projects" \
+curl -X POST "http://novix.dmxy.site/api/projects" \
   -H "Content-Type: application/json" \
   -d '{
     "name": "测试小说",
@@ -82,7 +82,7 @@ curl -X POST "http://localhost:8000/projects" \
 ### 步骤 2：创建角色卡
 
 ```bash
-curl -X POST "http://localhost:8000/projects/测试小说/cards/characters" \
+curl -X POST "http://novix.dmxy.site/api/projects/测试小说/cards/characters" \
   -H "Content-Type: application/json" \
   -d '{
     "name": "张三",
@@ -99,7 +99,7 @@ curl -X POST "http://localhost:8000/projects/测试小说/cards/characters" \
 ### 步骤 3：创建文风卡
 
 ```bash
-curl -X PUT "http://localhost:8000/projects/测试小说/cards/style" \
+curl -X PUT "http://novix.dmxy.site/api/projects/测试小说/cards/style" \
   -H "Content-Type: application/json" \
   -d '{
     "narrative_distance": "第三人称限知视角",
@@ -113,7 +113,7 @@ curl -X PUT "http://localhost:8000/projects/测试小说/cards/style" \
 ### 步骤 4：开始写作会话
 
 ```bash
-curl -X POST "http://localhost:8000/projects/测试小说/session/start" \
+curl -X POST "http://novix.dmxy.site/api/projects/测试小说/session/start" \
   -H "Content-Type: application/json" \
   -d '{
     "chapter": "ch01",
@@ -137,7 +137,7 @@ curl -X POST "http://localhost:8000/projects/测试小说/session/start" \
 如果不满意，可以提交反馈：
 
 ```bash
-curl -X POST "http://localhost:8000/projects/测试小说/session/feedback" \
+curl -X POST "http://novix.dmxy.site/api/projects/测试小说/session/feedback" \
   -H "Content-Type: application/json" \
   -d '{
     "chapter": "ch01",
@@ -153,7 +153,7 @@ curl -X POST "http://localhost:8000/projects/测试小说/session/feedback" \
 当满意后，确认完成：
 
 ```bash
-curl -X POST "http://localhost:8000/projects/测试小说/session/feedback" \
+curl -X POST "http://novix.dmxy.site/api/projects/测试小说/session/feedback" \
   -H "Content-Type: application/json" \
   -d '{
     "chapter": "ch01",
@@ -190,7 +190,7 @@ data/测试小说/
 如果你想实时监控写作进度，可以连接 WebSocket：
 
 ```javascript
-const ws = new WebSocket('ws://localhost:8000/ws/测试小说/session');
+const ws = new WebSocket('ws://novix.dmxy.site/ws/测试小说/session');
 
 ws.onmessage = (event) => {
   const data = JSON.parse(event.data);

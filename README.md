@@ -122,7 +122,7 @@ NOVIX 通过动态维护**世界状态**，解决长篇连载中的一致性问�
 
 3. ▶️ 双击运行 **`NOVIX.exe`**
    - 系统会自动启动后台服务
-   - 默认浏览器会自动打开操作界面 (http://localhost:8000)
+   - 默认浏览器会自动打开操作界面 (http://novix.dmxy.site/api)
    
 4. ⚙️ 初次使用需配置 API Key
    - 点击右上角 **"设置 → 智能体配置"**
@@ -161,13 +161,13 @@ start.bat
 启动脚本会自动完成：
 - ✅ 安装 Python 依赖 (`pip install -r backend/requirements.txt`)
 - ✅ 安装 Node.js 依赖 (`npm install` in frontend/)
-- ✅ 启动后端服务 (FastAPI on http://localhost:8000)
-- ✅ 启动前端服务 (Vite Dev Server on http://localhost:3000)
+- ✅ 启动后端服务 (FastAPI on http://novix.dmxy.site/api)
+- ✅ 启动前端服务 (Vite Dev Server on http://novix.dmxy.site)
 
 #### 🌐 访问应用
-- **前端界面**: http://localhost:3000 （支持热重载 HMR）
-- **后端 API**: http://localhost:8000
-- **API 文档**: http://localhost:8000/docs （FastAPI Swagger UI）
+- **前端界面**: http://novix.dmxy.site （支持热重载 HMR）
+- **后端 API**: http://novix.dmxy.site/api
+- **API 文档**: http://novix.dmxy.site/api/docs （FastAPI Swagger UI）
 
 #### ⚙️ 配置说明
 1. 复制后端配置模板：

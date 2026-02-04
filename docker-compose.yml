@@ -1,0 +1,24 @@
+services:
+  novix-backend:
+    build:
+      context: ./backend
+    container_name: novix-backend
+    restart: unless-stopped
+    networks:
+      - npm
+
+  novix-frontend:
+    build:
+      context: ./frontend
+    container_name: novix-frontend
+    restart: unless-stopped
+    expose:
+      - "5173"
+    depends_on:
+      - novix-backend
+    networks:
+      - npm
+
+networks:
+  npm:
+    external: true

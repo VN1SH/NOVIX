@@ -21,7 +21,7 @@ cd backend
 python -m app.main
 ```
 
-后端将在 http://localhost:8000 启动
+后端将在 http://novix.dmxy.site/api 启动
 
 **终端 2 - 启动前端开发服务器：**
 ```bash
@@ -29,15 +29,15 @@ cd frontend
 npm run dev
 ```
 
-前端将在 http://localhost:3000 启动
+前端将在 http://novix.dmxy.site 启动
 
 ## 访问应用
 
 启动后，访问以下地址：
 
-- **前端界面**：http://localhost:3000
-- **后端 API**：http://localhost:8000
-- **API 文档**：http://localhost:8000/docs （FastAPI Swagger UI）
+- **前端界面**：http://novix.dmxy.site
+- **后端 API**：http://novix.dmxy.site/api
+- **API 文档**：http://novix.dmxy.site/api/docs （FastAPI Swagger UI）
 
 ## 配置 API Keys
 
@@ -66,7 +66,7 @@ A: 检查以下几点：
 
 ### Q: 前端无法连接到后端
 A:
-- 确保后端已启动在 http://localhost:8000
+- 确保后端已启动在 http://novix.dmxy.site/api
 - 检查防火墙设置
 - 查看浏览器控制台（F12）的错误信息
 
@@ -107,5 +107,5 @@ NOVIX-main/
 
 - 查看 `STARTUP_TROUBLESHOOTING.md` 了解更多故障排除方法
 - 查看 `CLAUDE.md` 了解项目架构
-- 访问 API 文档：http://localhost:8000/docs
+- 访问 API 文档：http://novix.dmxy.site/api/docs
 - 提交 Issue：https://github.com/unitagain/NOVIX/issues

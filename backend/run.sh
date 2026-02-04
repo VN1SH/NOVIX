@@ -31,9 +31,9 @@ fi
 
 # Start server / 启动服务器
 echo ""
-echo "Starting server at http://localhost:8000"
-echo "服务器启动于 http://localhost:8000"
-echo "API Docs: http://localhost:8000/docs"
+echo "Starting server at http://novix.dmxy.site/api"
+echo "服务器启动于 http://novix.dmxy.site/api"
+echo "API Docs: http://novix.dmxy.site/api/docs"
 echo ""
 
 python -m app.main
